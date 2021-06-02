@@ -22,9 +22,10 @@ SAMPLE = 10
 for epoch in range(1):
     for (img_originals, _) in data_loader:
         img_original = img_originals[0]
-        recon = model(img_original)
-        recon_original = recon.reshape(28,28)
-        loss = criterion(recon, img_original)
+        recons = model(img_originals)
+        recon_original = recons[0]
+        recon_original = recon_original.reshape(28,28)
+        loss = criterion(img_originals, recons)
         original = img_original[0].detach().numpy()
         made = recon_original.detach().numpy()
         count = count + 1

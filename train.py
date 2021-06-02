@@ -15,7 +15,7 @@ model.train()
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
-num_epochs = 10
+num_epochs = 3
 outputs = []
 for epoch in range(num_epochs):
     for (img, _) in data_loader:
