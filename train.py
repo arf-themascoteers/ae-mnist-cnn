@@ -10,7 +10,7 @@ data_loader = torch.utils.data.DataLoader(dataset=mnist_data,
                                           batch_size=64,
                                           shuffle=True)
 
-model = autoencoder.Autoencoder_Linear()
+model = autoencoder.Autoencoder_CNN()
 model.train()
 criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
@@ -19,7 +19,6 @@ num_epochs = 10
 outputs = []
 for epoch in range(num_epochs):
     for (img, _) in data_loader:
-        img = img.reshape(-1, 28*28)
         recon = model(img)
         loss = criterion(recon, img)
         optimizer.zero_grad()

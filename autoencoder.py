@@ -1,27 +1,23 @@
 import torch.nn as nn
 
-class Autoencoder_Linear(nn.Module):
+class Autoencoder_CNN(nn.Module):
     def __init__(self):
         super().__init__()
         self.encoder = nn.Sequential(
-            nn.Linear(28 * 28, 128),  # (N, 784) -> (N, 128)
+            nn.Conv2d(1, 16, 3, stride=2, padding=1), # -> N, 16, 14, 14
             nn.ReLU(),
-            nn.Linear(128, 64),
+            nn.Conv2d(16, 32, 3, stride=2, padding=1), # -> N, 32, 7, 7
             nn.ReLU(),
-            nn.Linear(64, 12),
-            nn.ReLU(),
-            nn.Linear(12, 3)  # -> N, 3
+            nn.Conv2d(32, 64, 7) # -> N, 64, 1, 1
         )
 
         # WHAT IF DIFFERENT CONF OF DECODER?
         self.decoder = nn.Sequential(
-            nn.Linear(3, 12),
+            nn.ConvTranspose2d(64, 32, 7), # -> N, 32, 7, 7
             nn.ReLU(),
-            nn.Linear(12, 64),
+            nn.ConvTranspose2d(32, 16, 3, stride=2, padding=1, output_padding=1), # N, 16, 14, 14 (N,16,13,13 without output_padding)
             nn.ReLU(),
-            nn.Linear(64, 128),
-            nn.ReLU(),
-            nn.Linear(128, 28 * 28),
+            nn.ConvTranspose2d(16, 1, 3, stride=2, padding=1, output_padding=1), # N, 1, 28, 28  (N,1,27,27)
             nn.Sigmoid()
         )
 
